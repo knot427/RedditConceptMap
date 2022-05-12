@@ -1,0 +1,217 @@
+.VoteBar {
+    height: 100%; /* Full-height: remove this if you want "auto" height */
+    width: 15vw; /* Set the width of the sidebar */
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    /*z-index: 0; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #333333; /* Black */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    overflow-y: scroll;
+    padding-top: 0vw;
+}
+
+.addSubredditVote {
+    font-family:monospace;
+    text-align: center;
+    color: #ffffff;
+    background: #17640d;
+    border-radius: 0.2vw;
+    border: 0.01vw solid #008024;
+    margin: 0.5vw;
+    left: 50%;
+}
+
+.SeparatorBar {
+    height: 0.5vh;
+    margin: 0.25vh;
+    background: #c5c5c5;
+    border-radius: 0.25vw;
+}
+
+.AddVoteList {
+    display: flex;
+    flex-flow: nowrap;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.AddVoteBox {
+    background-color: #484848;
+    margin: 0.25vw;
+    border-radius: 0.5vw;
+    border: 0.125vw solid #414141;
+}
+
+.AddVoteBox-Title {
+    text-align: center;
+    color: white;
+
+}
+
+.AddVoteBox-Child {
+    text-align: center;
+    color: #c0c0c0;
+}
+
+.VoteButtons {
+    display: flex;
+    justify-content: center;
+}
+
+.YesButton {
+    width: 2vw;
+    font-size: 1.8vh;
+    background-color: #005600;
+    color: white;
+    text-align: center;
+    border-radius: 0.25vw;
+    border-color: #006900;
+    margin: 0.25vw;
+}
+
+.NoButton {
+    width: 2vw;
+    font-size: 1.8vh;
+    background-color: #560000;
+    color: white;
+    text-align: center;
+    border-radius: 0.25vw;
+    border-color: #770000;
+    margin: 0.25vw;
+}
+
+.AddVoteBox-Timer {
+    color: white;
+    font-size: large;
+    text-align: center;
+}
+
+.AddVoteBox-VoteBar {
+    display: flex;
+    justify-content: center;
+}
+
+.AddVoteBox-VoteBarYes {
+    text-align: center;
+    background-color: #005600;
+    width: 50%;
+    color: #96ff96;
+}
+
+.AddVoteBox-VoteBarNo {
+    text-align: center;
+    background-color: #560000;
+    color: #ff9696;
+    width: 50%;
+}
+
+.MainInformation {
+    align-content: center;
+    text-align: center;
+    margin-left: 15vw;
+}
+
+.MainTitle {
+    text-align: center;
+    font-size: 10vh;
+    color: white;
+}
+
+.LinkToTopic {
+    color: #656565;
+    text-align: center;
+    font-size: 3vh;
+}
+
+.Body {
+    background-color: #191919;
+}
+
+.Description {
+    color: white;
+    font-size: 2vh;
+    text-decoration: none;
+}
+
+.Bottom {
+    bottom: 0px;
+    left: 15vw;
+    position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+    width: 85%
+}
+
+.ParentVote {
+    height: 15vh; /* Full-height: remove this if you want "auto" height */
+    width: 100%; /* Set the width of the sidebar */
+    /*position: fixed /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    bottom: 0;
+    background-color: #333333; /* Black */
+    overflow-x: scroll; /* Disable horizontal scroll */
+    overflow-y: hidden;
+    padding-top: 0vw;
+
+    display: flex;
+    justify-content: center;
+}
+
+.Parents {
+    height: 10vh; /* Full-height: remove this if you want "auto" height */
+    width: 100%; /* Set the width of the sidebar */
+    /*position: fixed /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    bottom: 0;
+    background-color: #212121; /* Black */
+    overflow-x: scroll; /* Disable horizontal scroll */
+    overflow-y: hidden;
+    padding-top: 0vw;
+
+    display: flex;
+    justify-content: center;
+}
+
+.Children {
+    height: 10vh; /* Full-height: remove this if you want "auto" height */
+    width: 100%; /* Set the width of the sidebar */
+    /*position: fixed /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1; /* Stay on top */
+    bottom: 0;
+    background-color: #333333; /* Black */
+    overflow-x: scroll; /* Disable horizontal scroll */
+    overflow-y: hidden;
+    padding-top: 0vw;
+
+    display: flex;
+    justify-content: center;
+}
+
+.JumpBox-Title {
+    font-size: 1vw;
+    margin: 0.5vw;
+    color: white;
+}
+
+.JumpBox-Button {
+    background-color: #005600;
+    font-size: 1vw;
+    border-radius: 0.25vw;
+    color: white;
+    text-decoration: none;
+    padding: 0.125vw;
+    margin: 0.5vw;
+}
+
+.AddParentVoteBox {
+    background-color: #484848;
+    margin: 0.25vw;
+    border-radius: 0.5vw;
+    border: 0.125vw solid #005600;
+}
+
+.RemoveParentVoteBox {
+    background-color: #484848;
+    margin: 0.25vw;
+    border-radius: 0.5vw;
+    border: 0.125vw solid #560000;
+}
