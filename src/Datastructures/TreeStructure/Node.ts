@@ -4,7 +4,7 @@ export default class Node<T> {
     private parents: number[];
     private children: number[];
     private id: number;
-    private name: string;
+    private readonly name: string;
     private readonly data: T;
 
     public constructor(tree: Tree<T>, parents: number[], children: number[], name: string, data: T) {
@@ -12,7 +12,9 @@ export default class Node<T> {
         this.children = children;
         this.name = name;
         this.data = data;
+        this.id = -1;
         this.enroll(tree);
+
     }
 
     private enroll(tree: Tree<T>) {
@@ -38,5 +40,9 @@ export default class Node<T> {
 
     public getParents(): number[] {
         return this.parents;
+    }
+
+    public getName(): string {
+        return this.name;
     }
 }
