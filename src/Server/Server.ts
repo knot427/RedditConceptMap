@@ -1,13 +1,21 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
+import DataManager from "../DataManager/DataManager";
+import RealDataManager from "../DataManager/RealDataManager";
 
 export default class Server {
     private readonly port: number;
     private express: Application;
     private server: http.Server | undefined;
 
+    private dataManager: DataManager;
+
+    private readonly defaultCommunity: string = "all"
+
     constructor(port: number) {
+        this.dataManager = new RealDataManager();
+
         console.info(`Server::<init>( ${port} )`);
         this.port = port;
         this.express = express();
@@ -84,7 +92,10 @@ export default class Server {
     private registerRoutes() {
         // This is an example endpoint this you can invoke by accessing this URL in your browser:
         // http://localhost:4321/echo/hello
-        this.express.get("/echo/:msg", Server.echo);
+        //this.express.get("/echo/:msg", Server.echo);
+
+        this.express.get("/:community", this.retrieveCommunity);
+        this.express.get("/", this.retrieveDefaultCommunity);
 
         // TODO: your other endpoints should go here
         // this.express.put("/dataset/:id/:kind", Server.putDataset);
@@ -96,24 +107,35 @@ export default class Server {
         // this.express.get("/datasets", Server.getDatasets);
     }
 
-    // The next two methods handle the echo service.
-    // These are almost certainly not the best place to put these, but are here for your reference.
-    // By updating the Server.echo function pointer above, these methods can be easily moved.
-    private static echo(req: Request, res: Response) {
+    private retrieveCommunityInfo(community: string): {} {
+        let info: undefined | {} = undefined;
+        if (typeof community !== "undefined" && community !== null) {
+            info = this.dataManager.retrieveCommunityInformation(community);
+        }
+        if (typeof info === "undefined") {
+            throw new Error("Community Not Found");
+        } else {
+            return info
+        }
+    }
+
+    private retrieveCommunity(req: Request, res: Response) {
         try {
-            console.log(`Server::echo(..) - params: ${JSON.stringify(req.params)}`);
-            const response = Server.performEcho(req.params.msg);
+            console.log(`Server::retrieveCommunity(..) - params: ${JSON.stringify(req.params)}`);
+            const response = this.retrieveCommunityInfo(req.params.community);
             res.status(200).json({result: response});
         } catch (err) {
             res.status(400).json({error: err});
         }
     }
 
-    private static performEcho(msg: string): string {
-        if (typeof msg !== "undefined" && msg !== null) {
-            return `${msg}...${msg}`;
-        } else {
-            return "Message not provided";
+    private retrieveDefaultCommunity(req: Request, res: Response) {
+        try {
+            console.log(`Server::retrieveDefaultCommunity(..) - params: ${JSON.stringify(req.params)}`);
+            const response = this.retrieveCommunityInfo(this.defaultCommunity);
+            res.status(200).json({result: response});
+        } catch (err) {
+            res.status(400).json({error: err});
         }
     }
 }

@@ -1,17 +1,30 @@
 import Node from "./Node";
 import RelationshipTree from "./RelationshipTree";
 
-export default class Tree<T> implements RelationshipTree{
+export default class Tree<T> implements RelationshipTree<T>{
     private treeMap: Map<number, Node<T>>;
+    private nameMap: Map<string, number>;
     private nextAvailableID: number;
+
+    constructor() {
+        // TODO temporary
+        this.nextAvailableID = 0;
+        this.nameMap = new Map<string, number>();
+        this.treeMap = new Map<number, Node<T>>();
+    }
 
     public getAncestors(nodeInput: number | Node<T>): number[] {
         let node: Node<T> = this.cleanNodeInput(nodeInput);
 
         let toCheck: number[] = node.getParents();
         let completed: number[] = [];
-        while (toCheck.length > 0) {
-            let selected: number = toCheck.pop();
+        while (true) {
+            let selected: number | undefined = toCheck.pop();
+
+            if (typeof selected === "undefined") {
+                break;
+            }
+
             if (!completed.includes(selected)) {
                 let selectedNode: Node<T> = this.lookupID(selected);
                 toCheck.concat(selectedNode.getParents());
@@ -33,8 +46,13 @@ export default class Tree<T> implements RelationshipTree{
         }
         let completed: number[] = [];
 
-        while (toCheck.length > 0 && parentIds.length > 1) {
-            let selected: number = toCheck.pop();
+        while (parentIds.length > 1) {
+            let selected: number | undefined = toCheck.pop();
+
+            if (typeof selected === "undefined") {
+                break;
+            }
+
             if (!completed.includes(selected)) {
                 parentIds = parentIds.filter((id: number) => id !== selected);
                 if (selfID === selected) throw new ContainsCyclicalReference("Contains Cyclical Reference");
@@ -48,7 +66,7 @@ export default class Tree<T> implements RelationshipTree{
     }
 
     public lookupID(id: number): Node<T> {
-        let node: Node<T> = this.treeMap.get(id);
+        let node: Node<T> | undefined = this.treeMap.get(id);
         if (!(node === undefined)) {
             return node;
         } else {
@@ -63,14 +81,29 @@ export default class Tree<T> implements RelationshipTree{
         let returnedID = this.nextAvailableID;
         this.nextAvailableID = 1 + returnedID;
         this.treeMap.set(returnedID, node);
-        node.getParents().forEach((id: number) => this.treeMap.get(id).addChild(returnedID));
+        node.getParents().forEach((id: number) => {
+            let node = this.treeMap.get(id);
+            if (typeof node !== "undefined") {
+                node.addChild(returnedID);
+            } else {
+                throw new Error("Parent ID not found.")
+            }
+        });
+
+        this.nameMap.set(node.getName(), returnedID);
         return returnedID;
      }
 
      public removeNode(nodeInput: Node<T> | number) {
          let node: Node<T> = this.cleanNodeInput(nodeInput);
-
-         node.getParents().forEach((pid: number) => this.treeMap.get(pid).removeChild(node.getId()));
+         node.getParents().forEach((id: number) => {
+             let node = this.treeMap.get(id);
+             if (typeof node !== "undefined") {
+                 node.removeChild(node.getId());
+             } else {
+                 throw new Error("Parent ID not found.")
+             }
+         });
          this.treeMap.delete(node.getId());
      }
 
@@ -84,6 +117,14 @@ export default class Tree<T> implements RelationshipTree{
          return node;
      }
 
+    retrieveCommunity(name: string): T {
+        let id: number | undefined = this.nameMap.get(name);
+        if(typeof id === "undefined") {
+            throw new Error("ID not found.");
+        } else {
+            return this.lookupID(id).getData();
+        }
+    }
 }
 
 class IDNotFound extends Error {}
